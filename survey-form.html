@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>-->
+    <style>
+    body {width : 50%; margin: auto;};
+    #textinputs{background:LightSkyBlue; }
+    #listOfPlayers{background:LightSalmon; }
+    #Guilds {background:PaleTurquoise; display: grid; grid-template-areas: "left mid centre right";}
+    #captains{background:LightGreen; display: grid; grid-template-areas: "left centre" }
+    #squaddies {background: LightGreen; display: grid; grid-template-areas: "left centre"; }
+    #mascots{background:PaleGreen; display: grid; grid-template-areas: "left centre"}
+    label {background: LightGreen; }
+    input[type=checkbox]:checked + label {background: DarkGreen;  color: white; grid-area: "left centre";}
+    input[type=radio]:checked + label {background: DarkGreen;  color: white; grid-area: "mid right";}
+    
+    </style>   
+</head>
+<body>
+<h1 id="title">Guild choosing concept, it is just a chaotic adhoc early stage, doing nothing form</h1>
+<p id="description">This challenge inspired me to use obtained here knowledge to later on expand it and rebuild to allow building ones' team, searching a opponent and playing Guild Ball online.
+</p>
+    <form id="survey-form" action="#">
+    <div id="textinputs">
+        <label id="name-label" for="name">Name displayed to your opponent</label>
+        <input id="name" label="name-label" type="textarea" placeholder="nickname" required><br/>
+        <label id="email-label" for="email">We need to verify you</label>
+        <input id="email" label="email-label" type="email" placeholder="your email" required><br/>
+        <label id="number-label" for="number">Pre-arranged games unique ID:</label>
+        <input id="number" label="number-label" type="number"  placeholder="game 4 digits number" min="1111" max="9999" required><br/>
+    </div>    
+        <h2>Choose your guild:</h2>
+        <div id="Guilds">
+                <input id="alchemists" type="radio" name="guild" class="guild" onchange="showPlayers(id)">
+        <label for="alchemists">Alchemist's Guild</label>
+                <input id="blacksmiths" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="blacksmiths">Blacksmith's Guild</label>
+                <input id="brewers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="brewers">Brewer's Guild</label>
+                <input id="butchers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="Buthcers">Butcher's Guild</label>
+                <input id="church" type="radio" name="guild" class="guild" onchange = "showPlayers(this.id)">
+        <label for="church">The Church</label>
+                <input id="engineers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="engineers">Engineer's Guild</label>
+                <input id="falconers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="falconers">Falconer's Guild</label>
+                <input id="farmers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="farmers">Farmer's Guild</label>
+                <input id="fishers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="fishers">Fishermen's Guild</label>
+                <input id="hunters" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="hunters">Hunter's Guild</label>
+                <input id="masons" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="masons">Mason's Guild</label>
+                <input id="miners" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="miners">Miner's Guild</label>
+                <input id="morticians" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="morticians">Mortician's Guild</label>
+                <input id="navigators" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="navigators">Navigator's Guild</label>
+                <input id="ratcatchers" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="ratcatchers">Ratcatcher's Guild</label>
+                <input id="unions" type="radio" name="guild" class="guild" onchange="showPlayers(this.id)">
+        <label for="unions">The Union</label>
+             </div>
+
+        <div class="players" id="listOfPlayers">
+            <h2>Choose Your Captain</h2>
+            <div id="captains"></div>
+
+            <h2>Choose Mascot:</h2>
+            <div id="mascots"></div>
+    
+            <h2>Choose Squaddies:</h2>
+            <div id="squaddies">
+        </div>
+
+    <script >
+        //limits max squaddies to 4:
+        //this limits ALL checkboxes
+        /*
+        $("input:checkbox").click(function() {
+        var bol = $("input:checkbox:checked").length >= 4;     
+        $("input:checkbox").not(":checked").attr("disabled",bol);
+        });
+        
+        */
+        
+        var guildz = {
+        alchemists : ["Midas", "Smoke", "Flask", "Naja", "Calculus", "Vet.Calculus", "Compound", "Crucible", "Katalyst", "Vet.Katalyst", "Mercury", "Venin", "Virtol"],
+        blacksmiths : ["Anvil", "Ferrite", "Funance", "Burnish", "Farris", "Hearth", "Cinder", "Vet.Cinder", "Iron", "Sledge", "Alloy", "Bolt", "Cast"],
+        brewers :["Esters", "Tapper", "Quaff", "Scum", "Vet.Decimate", "Friday", "Hooper", "Lucky", "Mash", "Pintpot", "Spigot", "Stave", "Stoker"],
+        butchers : ["Ox", "Fillet", "Princess", "Truffles", "Boar", "Boiler", "Brisket", "Vet.Brisket", "Vet.Gutter", "Meathook", "Shank", "Tenderiser", "Vet.Ox"],
+        church : ["s.Brisket", "Pride", "Benediction", "Vet.Fangtooth", "Grace", "Harry the Hat", "Mist", "s.Spigot"],
+        engineers : ["Ballista", "Pin Vice", "Mainspring", "Mother", "Colossus", "Harriet", "Hoist", "Ratchet", "Salvo", "Velocity", "Vet.Velocity", "Locus", "Compound"],
+        falconers : ["Devana", "Frelsi", "Ikaros", "Mataagi", "Minerva", "Rundaas", "Egret", "Vet.Hearne"],
+        farmers : ["Grange", "Thresher", "Peck", "Buckwheat", "Bushel", "Fallow", "Harrow", "Vet.Honour", "Jackstraw", "Millstone", "Ploughman", "Tater", "Windle"],
+        fishers : ["Shark", "Corsair", "Salt", "Tentacles", "Angel", "Greyscales", "Hag", "Jac", "Kraken", "Sakana", "Vet.Sakana", "Siren", "Fathom", "Horizon"],
+        hunters : ["Skatha", "Theron", "Fahad", "Snow", "Chaska", "Egret", "Hearne", "Vet.Hearne", "Jaecar", "Vet.Minx", "Seenah", "Zarola", "Mataagi", "Minerva"],
+        masons : ["Honour", "Hammer", "Marbles", "Wrecker", "Brick", "Chisel", "Vet.Chisel", "Flint", "Granite", "Harmony", "Vet.Harmony", "Mallet", "Tower", "Lucky"],
+        miners : ["Shaft", "Fuse", "Mule", "Colossus"],
+        morticians : ["Obulus", "Scalpel", "Dirge", "Vileswarm", "Bonesaw", "Casket", "Cosset", "Ghast", "Graves", "Vet.Graves", "Vet.Hemlocke", "Silence", "Brainpan & Memory", "Pelage", "Skulk"],
+        navigators : ["Windfinder", "Wander", "Azimuth", "Ebb", "Fathom", "Horizon", "Angel", "Siren"],
+        ratcatchers : ["Piper", "Squeak", "Miasma", "Pelage", "Scourge", "Skulk", "Bonesaw", "Vet.Graves"],
+        unions : ["Blackheart", "Vet.Rage", "Coin", "Strongbox", "Avarisse & Greede", "Decimate", "Fangtooth", "Gutter", "Hemlocke", "Minx", "Rage", "Snakeskin", "Benediction", "Grace", "Harry the Hat", "Mist"]
+        };
+        
+        function lvlShow() {
+            var dropdown = document.getElementById("dropdown");
+            document.getElementById("lvlshowid").value = dropdown.options[dropdown.selectedIndex].text;
+        }
+        
+        function showPlayers(id) {
+            id = id;
+            $("#captains").empty();
+            $('#mascots').empty();
+            $("#squaddies").empty();
+            for (j=0; j<2; j++) {
+                    var captainInput = document.createElement ("input");
+                    var captainLabel = document.createElement ("label");
+                    var captainLabelName = document.createTextNode (guildz[id][j]);
+                    document.getElementById ("captains").appendChild (captainInput);
+                    document.getElementById ("captains").appendChild (captainLabel);
+                    captainInput.setAttribute("type","radio");
+                    captainInput.setAttribute ("name", "captain");
+                    captainInput.setAttribute ("id", "captain");
+                    captainLabel.setAttribute ("for","captain");
+                    captainLabel.appendChild(captainLabelName)
+                };
+            for (k=2; k<4; k++) {
+                    var mascotInput = document.createElement ("input");
+                    var mascotLabel = document.createElement ("label");
+                    var mascotName = document.createTextNode (guildz[id][k])
+                    document.getElementById ("mascots").appendChild (mascotInput);
+                    document.getElementById ("mascots").appendChild (mascotLabel);
+                    mascotInput.setAttribute ("type","radio");
+                    mascotInput.setAttribute ("name", "mascot");
+                    mascotInput.setAttribute ("id", "mascot");
+                    mascotLabel.setAttribute ("for", "mascot");
+                    mascotLabel.appendChild (mascotName)
+                };
+            for (i=4; i<guildz[id].length; i++) { 
+                    var squaddieInput = document.createElement ("input");
+                    var squaddieLabel = document.createElement ("label");
+                    var squaddieName = document.createTextNode (guildz[id][i]);
+                    document.getElementById ("squaddies").appendChild (squaddieInput);
+                    document.getElementById ("squaddies").appendChild (squaddieLabel);
+                    squaddieInput.setAttribute("type","checkbox");
+                    squaddieInput.setAttribute ("name", "squaddie");
+                    squaddieInput.setAttribute ("id", "squaddie");
+                    squaddieInput.setAttribute ("value", guildz[id][i]);
+                    squaddieLabel.setAttribute ("for", "squaddie");
+                    squaddieLabel.setAttribute ("class", "squaddie");
+                    squaddieLabel.appendChild(squaddieName)
+            }
+        };
+        
+           
+            $('.squaddie').on('change', function() {
+           if($('.squaddie:checked').length > 0) {
+               this.checked = false;
+           }
+        });
+        </script>
+
+    <div id="your-lvl">
+                                                                How good you are at Guild Ball:
+                                                                <select id="dropdown" onchange="lvlShow()">
+                                                                  <option></option>
+                                                                  <option>first timer</option>
+                                                                  <option>noob</option>  
+                                                                  <option>mediocre</option>
+                                                                  <option>advanced</option>
+                                                                  <option>tournament winner</option>
+                                                                </select>
+                                                                <p>Your power gaming level is: <input type="text" id="lvlshowid" size="20"></p>
+        </div>
+        
+        <input type="textarea" placeholder="additional comments" id="comments">
+        
+    <button type="submit" value="Submit">Submit</button>
+    </form>
+    
+</body>
+</html>
